@@ -127,6 +127,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		912283231C3E68F800F2998F /* Class */ = {
+			isa = PBXGroup;
+			children = (
+				917427241C3B75F00018EF93 /* AppDelegate.h */,
+				917427251C3B75F00018EF93 /* AppDelegate.m */,
+				917427271C3B75F00018EF93 /* ViewController.h */,
+				917427281C3B75F00018EF93 /* ViewController.m */,
+			);
+			name = Class;
+			sourceTree = "<group>";
+		};
 		917427151C3B75F00018EF93 = {
 			isa = PBXGroup;
 			children = (
@@ -150,15 +161,8 @@
 		917427201C3B75F00018EF93 /* SDWebImage框架源码注解-文顶顶 */ = {
 			isa = PBXGroup;
 			children = (
+				912283231C3E68F800F2998F /* Class */,
 				917427541C3B76110018EF93 /* SDWebImage */,
-				917427241C3B75F00018EF93 /* AppDelegate.h */,
-				917427251C3B75F00018EF93 /* AppDelegate.m */,
-				917427271C3B75F00018EF93 /* ViewController.h */,
-				917427281C3B75F00018EF93 /* ViewController.m */,
-				9174272A1C3B75F00018EF93 /* Main.storyboard */,
-				9174272D1C3B75F00018EF93 /* Assets.xcassets */,
-				9174272F1C3B75F00018EF93 /* LaunchScreen.storyboard */,
-				917427321C3B75F00018EF93 /* Info.plist */,
 				917427211C3B75F00018EF93 /* Supporting Files */,
 			);
 			path = "SDWebImage框架源码注解-文顶顶";
@@ -167,6 +171,10 @@
 		917427211C3B75F00018EF93 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9174272A1C3B75F00018EF93 /* Main.storyboard */,
+				9174272D1C3B75F00018EF93 /* Assets.xcassets */,
+				9174272F1C3B75F00018EF93 /* LaunchScreen.storyboard */,
+				917427321C3B75F00018EF93 /* Info.plist */,
 				917427221C3B75F00018EF93 /* main.m */,
 			);
 			name = "Supporting Files";
@@ -634,6 +642,7 @@
 				9174274D1C3B75F00018EF93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9174274E1C3B75F00018EF93 /* Build configuration list for PBXNativeTarget "SDWebImage框架源码注解-文顶顶Tests" */ = {
 			isa = XCConfigurationList;
@@ -642,6 +651,7 @@
 				917427501C3B75F00018EF93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		917427511C3B75F00018EF93 /* Build configuration list for PBXNativeTarget "SDWebImage框架源码注解-文顶顶UITests" */ = {
 			isa = XCConfigurationList;
@@ -650,6 +660,7 @@
 				917427531C3B75F00018EF93 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
