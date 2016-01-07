@@ -16,10 +16,11 @@ static NSString *const kCompletedCallbackKey = @"completed";
 @interface SDWebImageDownloader ()
 
 @property (strong, nonatomic) NSOperationQueue *downloadQueue;      //下载队列
-@property (weak, nonatomic) NSOperation *lastAddedOperation;        //最后一个下载操作
+@property (weak, nonatomic)   NSOperation *lastAddedOperation;      //最后一个下载操作
 @property (assign, nonatomic) Class operationClass;                 //操作的类型
 @property (strong, nonatomic) NSMutableDictionary *URLCallbacks;    //该url对应的URLCallbacks字典
 @property (strong, nonatomic) NSMutableDictionary *HTTPHeaders;     //请求头字典
+
 // This queue is used to serialize the handling of the network responses of all the download operation in a single queue
 // barrierQueue是一个串行队列，在一个单一队列中顺序处理所有下载操作的网络响应
 @property (SDDispatchQueueSetterSementics, nonatomic) dispatch_queue_t barrierQueue;
@@ -42,7 +43,7 @@ static NSString *const kCompletedCallbackKey = @"completed";
 #pragma clang diagnostic pop
 
         // Remove observer in case it was previously added.
-        //删除之前添加的观察者
+        //删除之前添加的观察者,注册通知
         [[NSNotificationCenter defaultCenter] removeObserver:activityIndicator name:SDWebImageDownloadStartNotification object:nil];
         [[NSNotificationCenter defaultCenter] removeObserver:activityIndicator name:SDWebImageDownloadStopNotification object:nil];
 

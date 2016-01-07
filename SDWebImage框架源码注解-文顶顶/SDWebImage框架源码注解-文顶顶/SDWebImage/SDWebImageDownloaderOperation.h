@@ -10,6 +10,7 @@
 #import "SDWebImageDownloader.h"
 #import "SDWebImageOperation.h"
 
+//使用extern关键字标识 使用SDWebImageDownloadStartNotification等全局变量
 extern NSString *const SDWebImageDownloadStartNotification;
 extern NSString *const SDWebImageDownloadReceiveResponseNotification;
 extern NSString *const SDWebImageDownloadStopNotification;

@@ -36,7 +36,7 @@ NSString *const SDWebImageDownloadFinishNotification = @"SDWebImageDownloadFinis
 @end
 
 @implementation SDWebImageDownloaderOperation {
-    size_t width, height;
+    size_t width, height;            //宽度和高度，用来处理渐进式下载
     UIImageOrientation orientation;
     BOOL responseFromCached;
 }
