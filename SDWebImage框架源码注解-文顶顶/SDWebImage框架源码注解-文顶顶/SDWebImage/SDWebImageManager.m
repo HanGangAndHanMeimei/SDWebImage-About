@@ -12,7 +12,7 @@
 @interface SDWebImageCombinedOperation : NSObject <SDWebImageOperation>
 
 @property (assign, nonatomic, getter = isCancelled) BOOL cancelled;              //取消
-@property (copy, nonatomic) SDWebImageNoParamsBlock cancelBlock;
+@property (copy, nonatomic) SDWebImageNoParamsBlock cancelBlock;                 //取消的回调
 @property (strong, nonatomic) NSOperation *cacheOperation;                       //处理缓存的操作
 
 @end
@@ -125,10 +125,23 @@
 
 //加载图片的核心方法
 /*
- url:图片的URL地址
- options：下载图片的策略
- progressBlock：进度回调block
- completedBlock:任务结束后的回调block
+ * 如果URL对应的图像在缓存中不存在，那么就下载指定的图片 ，否则返回缓存的图像
+ *
+ * @param url 图片的URL地址
+ * @param options 指定此次请求策略的选项
+ * @param progressBlock 图片下载进度的回调
+ * @param completedBlock 操作完成后的回调
+ *      此参数是必须的，此block没有返回值
+ *      Image：请求的 UIImage，如果出现错误，image参数是nil
+ *      error：如果出现错误，则error有值
+ *      cacheType：`SDImageCacheType` 枚举，标示该图像的加载方式
+ *          SDImageCacheTypeNone：从网络下载
+ *          SDImageCacheTypeDisk：从本地缓存加载
+ *          SDImageCacheTypeMemory：从内存缓存加载
+ *          finished：如果图像下载完成则为YES，如果使用 SDWebImageProgressiveDownload 选项，同时只获取到部分图片时，返回 NO
+ *          imageURL：图片的URL地址
+ *
+ * @return SDWebImageOperation对象，应该是SDWebimageDownloaderOperation实例
  */
 - (id <SDWebImageOperation>)downloadImageWithURL:(NSURL *)url
                                          options:(SDWebImageOptions)options
@@ -341,7 +354,12 @@
     return operation;
 }
 
-//根据图片的URL保存图片到缓存,共外界调用的方法
+/*
+ * 根据图片的URL保存图片到缓存
+ *
+ * @param image：缓存的图片
+ * @param url：该图片的URL地址
+ */
 - (void)saveImageToCache:(UIImage *)image forURL:(NSURL *)url {
     //如果图片和url存在，则对该图片进行缓存处理
     if (image && url) {
@@ -362,7 +380,7 @@
     }
 }
 
-//判断当前是否有正在执行的任务
+//检查一个或多个操作是否正在运行
 - (BOOL)isRunning {
     BOOL isRunning = NO;    //初始设定为NO，即没有
     //加互斥锁，根据runningOperations数组中元素的个数来判断当前是否有任务正在执行
