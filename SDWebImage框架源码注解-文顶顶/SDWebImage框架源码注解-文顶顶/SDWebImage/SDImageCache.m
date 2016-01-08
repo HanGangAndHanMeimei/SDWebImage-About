@@ -17,15 +17,18 @@
 
 @implementation AutoPurgeCache
 
+//初始化
 - (id)init
 {
     self = [super init];
     if (self) {
+        //监听到UIApplicationDidReceiveMemoryWarningNotification（应用程序发生内存警告）通知后，调用removeAllObjects方法
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(removeAllObjects) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
     }
     return self;
 }
 
+//移除通知
 - (void)dealloc
 {
     [[NSNotificationCenter defaultCenter] removeObserver:self name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
@@ -34,8 +37,10 @@
 
 @end
 
+//默认的最大缓存时间为1周
 static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week
 // PNG signature bytes and data (below)
+// PNG 签名字节和数据(PNG文件开始的8个字节是固定的)
 static unsigned char kPNGSignatureBytes[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
 static NSData *kPNGSignatureData = nil;
 
