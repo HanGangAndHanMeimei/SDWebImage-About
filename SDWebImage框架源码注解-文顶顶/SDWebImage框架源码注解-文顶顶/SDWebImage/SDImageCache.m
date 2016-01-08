@@ -227,8 +227,9 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 
     return filename;
 }
+
 #pragma mark --------------------
-#pragma mark ImageCache
+#pragma mark SDImageCache
 
 // Init the disk cache
 //设置磁盘缓存路径
