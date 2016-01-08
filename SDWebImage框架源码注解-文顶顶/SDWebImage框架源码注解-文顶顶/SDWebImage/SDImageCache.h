@@ -347,7 +347,7 @@ typedef void(^SDWebImageCalculateSizeBlock)(NSUInteger fileCount, NSUInteger tot
  *
  *  @return YES if an image exists for the given key
  *
- * 异步检查图像是否已经在磁盘缓存中存在（不加载图像）
+ * 检查图像是否已经在磁盘缓存中存在（不加载图像）
  * key 保存图像的唯一键
  * 如果该图片存在，则返回YES
  */
