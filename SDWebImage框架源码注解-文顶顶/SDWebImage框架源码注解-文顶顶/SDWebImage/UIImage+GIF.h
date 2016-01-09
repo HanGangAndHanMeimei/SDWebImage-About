@@ -10,8 +10,10 @@
 
 @interface UIImage (GIF)
 
+//传入Gif图像的名称，得到一个可动画的图像
 + (UIImage *)sd_animatedGIFNamed:(NSString *)name;
 
+//传入Gif图像的二进制数据，得到一个可动画的图像
 + (UIImage *)sd_animatedGIFWithData:(NSData *)data;
 
 - (UIImage *)sd_animatedImageByScalingAndCroppingToSize:(CGSize)size;
