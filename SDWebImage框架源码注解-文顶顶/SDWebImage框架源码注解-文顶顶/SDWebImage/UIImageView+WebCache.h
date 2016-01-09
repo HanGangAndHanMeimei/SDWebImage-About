@@ -49,6 +49,8 @@
  *
  * Note that because of the limitations of categories this property can get out of sync
  * if you use sd_setImage: directly.
+ *
+ * 获得当前图片的URL
  */
 - (NSURL *)sd_imageURL;
 
@@ -193,6 +195,7 @@
 
 @interface UIImageView (WebCacheDeprecated)
 
+//过期的方法
 - (NSURL *)imageURL __deprecated_msg("Use `sd_imageURL`");
 
 - (void)setImageWithURL:(NSURL *)url __deprecated_msg("Method deprecated. Use `sd_setImageWithURL:`");
