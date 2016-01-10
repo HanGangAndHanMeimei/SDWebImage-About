@@ -14,7 +14,10 @@
  *
  * Usage with a UITableViewCell sub-class:
  *
- * @code
+ * 为UIImageView集成了远程异步远程图片下载和缓存。
+ *
+ *
+ *@code
 
 #import <SDWebImage/UIImageView+WebCache.h>
 
@@ -30,7 +33,8 @@
         cell = [[[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:MyIdentifier]
                  autorelease];
     }
- 
+    
+    //使用该方法可以先给cell设置一个占位图片
     // Here we use the provided sd_setImageWithURL: method to load the web image
     // Ensure you use a placeholder image otherwise cells will be initialized with no image
     [cell.imageView sd_setImageWithURL:[NSURL URLWithString:@"http://example.com/image.jpg"]
@@ -60,6 +64,10 @@
  * The download is asynchronous and cached.
  *
  * @param url The url for the image.
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去
+ * 异步下载并缓存。
+ * @param url 图片的URL
  */
 - (void)sd_setImageWithURL:(NSURL *)url;
 
@@ -71,6 +79,11 @@
  * @param url         The url for the image.
  * @param placeholder The image to be set initially, until the image request finishes.
  * @see sd_setImageWithURL:placeholderImage:options:
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去,并设置占位图片
+ * @param url 图片的URL
+ * @param placeholder 显示在UIImageView上面的占位图片，直到图片下载完成
+ * @see 参考sd_setImageWithURL:placeholderImage:options:方法
  */
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder;
 
@@ -82,6 +95,11 @@
  * @param url         The url for the image.
  * @param placeholder The image to be set initially, until the image request finishes.
  * @param options     The options to use when downloading the image. @see SDWebImageOptions for the possible values.
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去,并设置占位图片，自定义下载选项
+ * @param url           图片的URL
+ * @param placeholder   显示在UIImageView上面的占位图片，直到图片下载完成
+ * @param options       下载图片的选项。参考SDWebImageOptions的枚举值
  */
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options;
 
@@ -96,6 +114,16 @@
  *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean
  *                       indicating if the image was retrieved from the local cache or from the network.
  *                       The fourth parameter is the original image url.
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去
+ * 异步下载并缓存
+ *
+ * @param url            图片的URL
+ * @param completedBlock 当操作执行完毕之后的回调。该回调没有返回值
+ *      第一个参数为请求的图片
+ *      第二个参数是NSError类型的，如果图片下载成功则error为nil,否则error有值
+ *      第三个参数是图片缓存的使用情况（内存缓存|沙盒缓存|直接下载）
+ *      第四个参数是图片的URL地址
  */
 - (void)sd_setImageWithURL:(NSURL *)url completed:(SDWebImageCompletionBlock)completedBlock;
 
@@ -111,6 +139,17 @@
  *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean
  *                       indicating if the image was retrieved from the local cache or from the network.
  *                       The fourth parameter is the original image url.
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去，占位图片
+ * 异步下载并缓存
+ *
+ * @param url            图片的URL
+ * @param placeholder   显示在UIImageView上面的占位图片，直到图片下载完成
+ * @param completedBlock 当操作执行完毕之后的回调。该回调没有返回值
+ *      第一个参数为请求的图片
+ *      第二个参数是NSError类型的，如果图片下载成功则error为nil,否则error有值
+ *      第三个参数是图片缓存的使用情况（内存缓存|沙盒缓存|直接下载）
+ *      第四个参数是图片的URL地址
  */
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder completed:(SDWebImageCompletionBlock)completedBlock;
 
@@ -127,6 +166,18 @@
  *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean
  *                       indicating if the image was retrieved from the local cache or from the network.
  *                       The fourth parameter is the original image url.
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去，占位图片
+ * 异步下载并缓存
+ *
+ * @param url            图片的URL
+ * @param placeholder   显示在UIImageView上面的占位图片，直到图片下载完成
+ * @param options       下载图片的选项。参考SDWebImageOptions的枚举值
+ * @param completedBlock 当操作执行完毕之后的回调。该回调没有返回值
+ *      第一个参数为请求的图片
+ *      第二个参数是NSError类型的，如果图片下载成功则error为nil,否则error有值
+ *      第三个参数是图片缓存的使用情况（内存缓存|沙盒缓存|直接下载）
+ *      第四个参数是图片的URL地址
  */
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options completed:(SDWebImageCompletionBlock)completedBlock;
 
@@ -144,6 +195,19 @@
  *                       is nil and the second parameter may contain an NSError. The third parameter is a Boolean
  *                       indicating if the image was retrieved from the local cache or from the network.
  *                       The fourth parameter is the original image url.
+ *
+ * 根据图片的url下载图片并设置到ImageView上面去，占位图片
+ * 异步下载并缓存
+ *
+ * @param url            图片的URL
+ * @param placeholder    显示在UIImageView上面的占位图片，直到图片下载完成
+ * @param options        下载图片的选项。参考SDWebImageOptions的枚举值
+ * @param progressBlock  下载的进度回调
+ * @param completedBlock 当操作执行完毕之后的回调。该回调没有返回值
+ *      第一个参数为请求的图片
+ *      第二个参数是NSError类型的，如果图片下载成功则error为nil,否则error有值
+ *      第三个参数是图片缓存的使用情况（内存缓存|沙盒缓存|直接下载）
+ *      第四个参数是图片的URL地址
  */
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletionBlock)completedBlock;
 
