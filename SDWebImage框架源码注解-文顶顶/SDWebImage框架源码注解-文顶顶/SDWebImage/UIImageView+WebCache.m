@@ -17,6 +17,7 @@ static char TAG_ACTIVITY_SHOW;
 
 @implementation UIImageView (WebCache)
 
+//下面的一堆方法都是下载图片的，内部调用的方法一样，区别只在于参数
 - (void)sd_setImageWithURL:(NSURL *)url {
     [self sd_setImageWithURL:url placeholderImage:nil options:0 progress:nil completed:nil];
 }
@@ -112,6 +113,7 @@ static char TAG_ACTIVITY_SHOW;
         dispatch_main_async_safe(^{
             //移除UIActivityIndicatorView
             [self removeActivityIndicator];
+            
             //处理错误信息，并执行任务结束回调，把错误信息作为参数传递出去
             NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey : @"Trying to load a nil url"}];
             if (completedBlock) {
