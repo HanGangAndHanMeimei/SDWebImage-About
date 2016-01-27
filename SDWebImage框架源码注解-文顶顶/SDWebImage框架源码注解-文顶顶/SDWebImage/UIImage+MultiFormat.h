@@ -10,6 +10,7 @@
 
 @interface UIImage (MultiFormat)
 
+//把二进制数据转换为对应的图片
 + (UIImage *)sd_imageWithData:(NSData *)data;
 
 @end

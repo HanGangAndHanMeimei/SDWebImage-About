@@ -18,24 +18,33 @@
 @implementation UIImage (MultiFormat)
 
 + (UIImage *)sd_imageWithData:(NSData *)data {
+    //如果二进制数据为空，则直接返回nil
     if (!data) {
         return nil;
     }
     
     UIImage *image;
+    //通过分类中的sd_contentTypeForImageData方法获得图片的类型
     NSString *imageContentType = [NSData sd_contentTypeForImageData:data];
+    
+    //此处对GIF和/webp类型的图片做出了特殊的处理
+    //如果发现该图片为GIF图片，则使用GIF分类中的sd_animatedGIFWithData方法把二机制数据转换为对应的GIF图片
     if ([imageContentType isEqualToString:@"image/gif"]) {
         image = [UIImage sd_animatedGIFWithData:data];
     }
 #ifdef SD_WEBP
     else if ([imageContentType isEqualToString:@"image/webp"])
     {
+        //如果图片是webp类型的那就转换为webp类型的图片
         image = [UIImage sd_imageWithWebPData:data];
     }
 #endif
     else {
+        //如果图片非GIF|webp类型，则直接转换
         image = [[UIImage alloc] initWithData:data];
+        //处理图片的方向
         UIImageOrientation orientation = [self sd_imageOrientationFromImageData:data];
+        //如果发现图片非向上的，则调整图片夫人排列方式为正方向
         if (orientation != UIImageOrientationUp) {
             image = [UIImage imageWithCGImage:image.CGImage
                                         scale:image.scale
