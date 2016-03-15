@@ -62,7 +62,7 @@ BOOL ImageDataHasPNGPreffix(NSData *data) {
     return NO;
 }
 
-//计算图片成本？
+//计算图片成本？= 图片的宽度*高度*缩放*缩放
 FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     return image.size.height * image.size.width * image.scale * image.scale;
 }
@@ -74,6 +74,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 @property (strong, nonatomic) NSCache *memCache;            //内存缓存
 @property (strong, nonatomic) NSString *diskCachePath;      //磁盘缓存路径
 @property (strong, nonatomic) NSMutableArray *customPaths;  //自定义路径（数组）
+
 @property (SDDispatchQueueSetterSementics, nonatomic) dispatch_queue_t ioQueue; //处理IO操作的队列
 
 @end
@@ -108,6 +109,9 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 //使用指定的命名空间实例化一个新的缓存存储和目录
 - (id)initWithNamespace:(NSString *)ns diskCacheDirectory:(NSString *)directory {
     if ((self = [super init])) {
+
+        //拼接完成的结果为：caches路径--》default--》com.hackemist.SDWebImageCache.default
+
         //拼接默认的磁盘缓存目录
         NSString *fullNamespace = [@"com.hackemist.SDWebImageCache." stringByAppendingString:ns];
 
@@ -219,6 +223,11 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     if (str == NULL) {
         str = "";
     }
+
+    //写数据：拿到图片的url作为key,对url进行md5加密，当图片下载完成后，传入url作为key计算得到加密后的32位字符密文作为图片的名称，调用下面的方法执行写文件到磁盘的操作
+    /*- storeImage:(UIImage *)image recalculateFromImage:(BOOL)recalculate imageData:(NSData *)imageData forKey:(NSString *)key toDisk:(BOOL)toDisk*/
+    //读数据：先判断是否有内存缓存，再判断是否有磁盘缓存（在判断的时候需要对该url进行MD5加密）拼接得到文件路径后，使用[NSData dataWithContentsOfFile...方法）加载对应的二进制数据。
+
     unsigned char r[CC_MD5_DIGEST_LENGTH];
     CC_MD5(str, (CC_LONG)strlen(str), r);
     NSString *filename = [NSString stringWithFormat:@"%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%02x%@",
@@ -236,6 +245,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
 -(NSString *)makeDiskCachePath:(NSString*)fullNamespace{
     //获得caches路径，该框架内部对图片进行磁盘缓存，设置的缓存目录为沙盒中Library的caches目录下
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask, YES);
+
     //在caches目录下，新建一个名为【fullNamespace】的文件，沙盒缓存就保存在此处
     return [paths[0] stringByAppendingPathComponent:fullNamespace];
 }
@@ -247,10 +257,11 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
         return;
     }
     // if memory cache is enabled
-    //如果内存缓存可用
+    //判断是否需要进行内存缓存，如何需要那么先计算图片成本，再保存到self.memCache中
     if (self.shouldCacheImagesInMemory) {
         //计算该图片的『成本』
         NSUInteger cost = SDCacheCostForImage(image);
+
         //把该图片保存到内存缓存中
         [self.memCache setObject:image forKey:key cost:cost];
     }
@@ -315,7 +326,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
                 [_fileManager createFileAtPath:cachePathForKey contents:data attributes:nil];
 
                 // disable iCloud backup
-                //如果禁用了iCloud备份
+                //判断是否禁用了iCloud备份
                 if (self.shouldDisableiCloud) {
                     //标记沙盒中不备份文件（标记该文件不备份）
                     [fileURL setResourceValue:[NSNumber numberWithBool:YES] forKey:NSURLIsExcludedFromBackupKey error:nil];
