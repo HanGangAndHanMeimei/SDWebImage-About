@@ -41,6 +41,7 @@
 
 //默认的最大缓存时间为1周
 static const NSInteger kDefaultCacheMaxCacheAge = 60 * 60 * 24 * 7; // 1 week
+
 // PNG signature bytes and data (below)
 // PNG 签名字节和数据(PNG文件开始的8个字节是固定的)
 static unsigned char kPNGSignatureBytes[8] = {0x89, 0x50, 0x4E, 0x47, 0x0D, 0x0A, 0x1A, 0x0A};
@@ -546,7 +547,6 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     } else if (completion){
         completion();
     }
-    
 }
 
 //设置内存缓存（NSCache）能保存的最大成本
@@ -705,6 +705,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     //得到UIApplication单例对象
     UIApplication *application = [UIApplication performSelector:@selector(sharedApplication)];
     __block UIBackgroundTaskIdentifier bgTask = [application beginBackgroundTaskWithExpirationHandler:^{
+
         // Clean up any unfinished task business by marking where you
         // stopped or ending the task outright.
         // 清理任何未完成的任务
@@ -720,17 +721,25 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     }];
 }
 
-//获得大小
+//获得磁盘缓存文件的总大小
 - (NSUInteger)getSize {
     __block NSUInteger size = 0;
+
     //同步+串行队列
     dispatch_sync(self.ioQueue, ^{
+
         //得到diskCachePath路径下面的所有子路径
         NSDirectoryEnumerator *fileEnumerator = [_fileManager enumeratorAtPath:self.diskCachePath];
+
         //遍历得到所有子路径对应文件的大小，并累加以计算所有文件的总大小
         for (NSString *fileName in fileEnumerator) {
+            //拼接文件的全路径
             NSString *filePath = [self.diskCachePath stringByAppendingPathComponent:fileName];
+
+            //获得文件的属性
             NSDictionary *attrs = [[NSFileManager defaultManager] attributesOfItemAtPath:filePath error:nil];
+
+            //调用fileSize 获得文件的大小 == attrs["NSFileSzie"]
             size += [attrs fileSize];
         }
     });
@@ -742,6 +751,7 @@ FOUNDATION_STATIC_INLINE NSUInteger SDCacheCostForImage(UIImage *image) {
     //初始化为0
     __block NSUInteger count = 0;
     dispatch_sync(self.ioQueue, ^{
+
         //根据计算该路径下面的子路径的数量得到
         NSDirectoryEnumerator *fileEnumerator = [_fileManager enumeratorAtPath:self.diskCachePath];
         count = [[fileEnumerator allObjects] count];
