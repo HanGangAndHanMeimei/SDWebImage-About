@@ -201,16 +201,16 @@
 		91353FDD1D0E60ED002645AB /* SDWebImage */ = {
 			isa = PBXGroup;
 			children = (
-				913540131D0E615B002645AB /* Categories */,
-				913540121D0E6144002645AB /* Cache */,
-				913540111D0E6129002645AB /* Utils */,
-				913540101D0E6112002645AB /* Manager */,
-				9135400F1D0E60FE002645AB /* Downloader */,
+				913540131D0E615B002645AB /* Categories(分类) */,
+				913540121D0E6144002645AB /* Cache(缓存处理器) */,
+				913540111D0E6129002645AB /* Utils(公共组件) */,
+				913540101D0E6112002645AB /* Manager(管理者) */,
+				9135400F1D0E60FE002645AB /* Downloader(图片下载处理器) */,
 			);
 			path = SDWebImage;
 			sourceTree = "<group>";
 		};
-		9135400F1D0E60FE002645AB /* Downloader */ = {
+		9135400F1D0E60FE002645AB /* Downloader(图片下载处理器) */ = {
 			isa = PBXGroup;
 			children = (
 				91353FE81D0E60ED002645AB /* SDWebImageDownloader.h */,
@@ -218,19 +218,19 @@
 				91353FEA1D0E60ED002645AB /* SDWebImageDownloaderOperation.h */,
 				91353FEB1D0E60ED002645AB /* SDWebImageDownloaderOperation.m */,
 			);
-			name = Downloader;
+			name = "Downloader(图片下载处理器)";
 			sourceTree = "<group>";
 		};
-		913540101D0E6112002645AB /* Manager */ = {
+		913540101D0E6112002645AB /* Manager(管理者) */ = {
 			isa = PBXGroup;
 			children = (
 				91353FEC1D0E60ED002645AB /* SDWebImageManager.h */,
 				91353FED1D0E60ED002645AB /* SDWebImageManager.m */,
 			);
-			name = Manager;
+			name = "Manager(管理者)";
 			sourceTree = "<group>";
 		};
-		913540111D0E6129002645AB /* Utils */ = {
+		913540111D0E6129002645AB /* Utils(公共组件) */ = {
 			isa = PBXGroup;
 			children = (
 				91353FE41D0E60ED002645AB /* SDWebImageCompat.h */,
@@ -241,19 +241,19 @@
 				91353FEF1D0E60ED002645AB /* SDWebImagePrefetcher.h */,
 				91353FF01D0E60ED002645AB /* SDWebImagePrefetcher.m */,
 			);
-			name = Utils;
+			name = "Utils(公共组件)";
 			sourceTree = "<group>";
 		};
-		913540121D0E6144002645AB /* Cache */ = {
+		913540121D0E6144002645AB /* Cache(缓存处理器) */ = {
 			isa = PBXGroup;
 			children = (
 				91353FE21D0E60ED002645AB /* SDImageCache.h */,
 				91353FE31D0E60ED002645AB /* SDImageCache.m */,
 			);
-			name = Cache;
+			name = "Cache(缓存处理器)";
 			sourceTree = "<group>";
 		};
-		913540131D0E615B002645AB /* Categories */ = {
+		913540131D0E615B002645AB /* Categories(分类) */ = {
 			isa = PBXGroup;
 			children = (
 				91353FDE1D0E60ED002645AB /* MKAnnotationView+WebCache.h */,
@@ -275,7 +275,7 @@
 				91353FFD1D0E60ED002645AB /* UIView+WebCacheOperation.h */,
 				91353FFE1D0E60ED002645AB /* UIView+WebCacheOperation.m */,
 			);
-			name = Categories;
+			name = "Categories(分类)";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -653,6 +653,7 @@
 				91353FA11D0E6012002645AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		91353FA21D0E6012002645AB /* Build configuration list for PBXNativeTarget "SDWebImage框架源码注解-By文顶顶Tests" */ = {
 			isa = XCConfigurationList;
@@ -661,6 +662,7 @@
 				91353FA41D0E6012002645AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		91353FA51D0E6012002645AB /* Build configuration list for PBXNativeTarget "SDWebImage框架源码注解-By文顶顶UITests" */ = {
 			isa = XCConfigurationList;
@@ -669,6 +671,7 @@
 				91353FA71D0E6012002645AB /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
