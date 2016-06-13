@@ -150,7 +150,7 @@ typedef NSString *(^SDWebImageCacheKeyFilterBlock)(NSURL *url);
 @protocol SDWebImageManagerDelegate <NSObject>
 @optional
 
-#warning 1
+#warning ...
 /**
  * Controls which image should be downloaded when the image is not found in the cache.
  *
