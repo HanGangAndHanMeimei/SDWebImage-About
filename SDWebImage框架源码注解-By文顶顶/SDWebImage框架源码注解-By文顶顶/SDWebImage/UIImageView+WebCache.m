@@ -17,6 +17,7 @@ static char TAG_ACTIVITY_SHOW;
 
 @implementation UIImageView (WebCache)
 
+//下面的一堆方法都是下载图片的，内部调用的方法一样，区别只在于参数
 - (void)sd_setImageWithURL:(NSURL *)url {
     [self sd_setImageWithURL:url placeholderImage:nil options:0 progress:nil completed:nil];
 }
@@ -41,38 +42,61 @@ static char TAG_ACTIVITY_SHOW;
     [self sd_setImageWithURL:url placeholderImage:placeholder options:options progress:nil completed:completedBlock];
 }
 
+//下载图片的核心方法
+/*
+ * url          图片的二进制数据
+ * placeholder  UIImageView的占位图片
+ * options      图片下载选项（策略）
+ * progressBlock    进度回调
+ * completedBlock   完成回调
+ */
 - (void)sd_setImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletionBlock)completedBlock {
+
+    // 取消当前图像下载
     [self sd_cancelCurrentImageLoad];
+
+    // 利用运行时retain url
     objc_setAssociatedObject(self, &imageURLKey, url, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
 
+    //判断，如果传入的下载策略不是延迟显示占位图片，那么在主线程中设置占位图片
     if (!(options & SDWebImageDelayPlaceholder)) {
         dispatch_main_async_safe(^{
+            // 设置占位图像
             self.image = placeholder;
         });
     }
-    
+
+    //如果url不为空
     if (url) {
 
         // check if activityView is enabled or not
+        //检查activityView是否可用
         if ([self showActivityIndicatorView]) {
             [self addActivityIndicator];
         }
 
         __weak __typeof(self)wself = self;
+        // 实例化 SDWebImageOperation 操作
         id <SDWebImageOperation> operation = [SDWebImageManager.sharedManager downloadImageWithURL:url options:options progress:progressBlock completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, BOOL finished, NSURL *imageURL) {
+            //移除UIActivityIndicatorView
             [wself removeActivityIndicator];
             if (!wself) return;
+
+            //下面block中的操作在主线程中处理
             dispatch_main_sync_safe(^{
                 if (!wself) return;
+                //如果图片下载完成，且传入的下载选项为手动设置图片则直接执行completedBlock回调，并返回
                 if (image && (options & SDWebImageAvoidAutoSetImage) && completedBlock)
                 {
                     completedBlock(image, error, cacheType, url);
                     return;
                 }
-                else if (image) {
+                else if (image) {   //否则，如果图片存在，则设置图片到UIImageView上面，并刷新重绘视图
                     wself.image = image;
                     [wself setNeedsLayout];
                 } else {
+                    //如果没有得到图像
+                    //如果传入的下载选项为延迟显示占位图片，则设置占位图片到UIImageView上面，并刷新重绘视图
                     if ((options & SDWebImageDelayPlaceholder)) {
                         wself.image = placeholder;
                         [wself setNeedsLayout];
@@ -85,10 +109,14 @@ static char TAG_ACTIVITY_SHOW;
         }];
         [self sd_setImageLoadOperation:operation forKey:@"UIImageViewImageLoad"];
     } else {
+        //如果url为空，则在主线中处理下面的操作
         dispatch_main_async_safe(^{
+            //移除UIActivityIndicatorView
             [self removeActivityIndicator];
+
+            //处理错误信息，并执行任务结束回调，把错误信息作为参数传递出去
+            NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey : @"Trying to load a nil url"}];
             if (completedBlock) {
-                NSError *error = [NSError errorWithDomain:SDWebImageErrorDomain code:-1 userInfo:@{NSLocalizedDescriptionKey : @"Trying to load a nil url"}];
                 completedBlock(nil, error, SDImageCacheTypeNone, url);
             }
         });
@@ -98,8 +126,8 @@ static char TAG_ACTIVITY_SHOW;
 - (void)sd_setImageWithPreviousCachedImageWithURL:(NSURL *)url placeholderImage:(UIImage *)placeholder options:(SDWebImageOptions)options progress:(SDWebImageDownloaderProgressBlock)progressBlock completed:(SDWebImageCompletionBlock)completedBlock {
     NSString *key = [[SDWebImageManager sharedManager] cacheKeyForURL:url];
     UIImage *lastPreviousCachedImage = [[SDImageCache sharedImageCache] imageFromDiskCacheForKey:key];
-    
-    [self sd_setImageWithURL:url placeholderImage:lastPreviousCachedImage ?: placeholder options:options progress:progressBlock completed:completedBlock];    
+
+    [self sd_setImageWithURL:url placeholderImage:lastPreviousCachedImage ?: placeholder options:options progress:progressBlock completed:completedBlock];
 }
 
 - (NSURL *)sd_imageURL {
