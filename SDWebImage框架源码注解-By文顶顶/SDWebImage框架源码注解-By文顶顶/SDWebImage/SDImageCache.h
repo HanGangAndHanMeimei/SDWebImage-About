@@ -173,9 +173,10 @@ typedef void(^SDWebImageCalculateSizeBlock)(NSUInteger fileCount, NSUInteger tot
 #warning 新增加的方法
 /**
  * Store image NSData into disk cache at the given key.
+ * 根据给定的Key对图片的二进制数据进行磁盘缓存
  *
- * @param imageData The image data to store
- * @param key   The unique image cache key, usually it's image absolute URL
+ * @param imageData The image data to store     图片的二进制数据
+ * @param key   The unique image cache key, usually it's image absolute URL 图片的缓存KEY
  */
 - (void)storeImageDataToDisk:(NSData *)imageData forKey:(NSString *)key;
 
